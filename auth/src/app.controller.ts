@@ -14,7 +14,11 @@ export class AppController {
 
   @MessagePattern('register.user')
   createUser(userData) {
-    console.log(userData);
     return this.appService.createUser(userData);
+  }
+
+  @MessagePattern('login.user')
+  loginUser(loginData) {
+    return this.appService.loginUser(loginData);
   }
 }

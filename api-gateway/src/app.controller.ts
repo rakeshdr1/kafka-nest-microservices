@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { AppService } from './app.service';
+import { UserLoginDto } from './common/dto/user-login.dto';
 import { UserRegisterDto } from './common/dto/user-register.dto';
 
 @Controller()
@@ -32,7 +33,11 @@ export class AppController implements OnModuleInit {
 
   @Post('register')
   registerUser(@Body() registerData: UserRegisterDto) {
-    console.log(registerData);
-    return this.authClient.send('register.user', registerData);
+    return this.authClient.send('register.user', JSON.stringify(registerData));
+  }
+
+  @Post('login')
+  loginUser(@Body() loginData: UserLoginDto) {
+    return this.authClient.send('login.user', JSON.stringify(loginData));
   }
 }
