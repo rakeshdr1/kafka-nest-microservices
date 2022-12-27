@@ -4,12 +4,14 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   notifications = [];
 
-  getHello(): string {
-    return 'Hello World!';
+  getNotifications() {
+    return this.notifications;
   }
 
-  handleUserCreated(userData) {
-    console.log('user created notification');
-    this.notifications.push({ type: 'user.crested', ...userData });
+  handleNotificationCreated(notificationData) {
+    console.log('logged created notification');
+    this.notifications.push({
+      ...notificationData,
+    });
   }
 }

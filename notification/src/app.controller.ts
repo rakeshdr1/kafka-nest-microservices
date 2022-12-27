@@ -1,18 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @MessagePattern('notification.get')
+  getNotifications() {
+    return this.appService.getNotifications();
   }
 
-  @EventPattern('user.created')
+  @EventPattern('notification.created')
   handleOrderCreated(data: any) {
-    this.appService.handleUserCreated(data.value);
+    this.appService.handleNotificationCreated(data);
   }
 }

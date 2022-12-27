@@ -16,7 +16,10 @@ export class AppService {
     const user = userData;
     console.log(user);
 
-    this.notificationClient.emit('user_created', userData);
+    this.notificationClient.emit('notification.created', {
+      title: 'User created',
+      ...userData,
+    });
     return user;
   }
 

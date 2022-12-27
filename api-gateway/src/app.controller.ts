@@ -7,37 +7,39 @@ import {
   Post,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { AppService } from './app.service';
 import { UserLoginDto } from './common/dto/user-login.dto';
 import { UserRegisterDto } from './common/dto/user-register.dto';
 
 @Controller()
 export class AppController implements OnModuleInit {
   constructor(
-    private readonly appService: AppService,
-    @Inject('AUTH_SERVICE') private readonly authClient: ClientKafka,
+    @Inject('KAFKA_SERVICE') private readonly kafkaClient: ClientKafka,
   ) {}
 
   onModuleInit() {
-    const subscriptionTopics = ['say.hello', 'register.user', 'login.user'];
+    const authTopics = ['say.hello', 'register.user', 'login.user'];
+    const notificationTopics = ['notification.get'];
 
-    subscriptionTopics.forEach((topic) =>
-      this.authClient.subscribeToResponseOf(topic),
+    authTopics.forEach((topic) =>
+      this.kafkaClient.subscribeToResponseOf(topic),
+    );
+    notificationTopics.forEach((topic) =>
+      this.kafkaClient.subscribeToResponseOf(topic),
     );
   }
 
   @Get()
-  getHello() {
-    return this.authClient.send('say.hello', { ip: '127.0.0.1' });
+  getNotifications() {
+    return this.kafkaClient.send('notification.get', '');
   }
 
   @Post('register')
   registerUser(@Body() registerData: UserRegisterDto) {
-    return this.authClient.send('register.user', JSON.stringify(registerData));
+    return this.kafkaClient.send('register.user', JSON.stringify(registerData));
   }
 
   @Post('login')
   loginUser(@Body() loginData: UserLoginDto) {
-    return this.authClient.send('login.user', JSON.stringify(loginData));
+    return this.kafkaClient.send('login.user', JSON.stringify(loginData));
   }
 }

@@ -32,6 +32,19 @@ import { AppService } from './app.service';
           },
         },
       },
+      {
+        name: 'KAFKA_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'client',
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'client-consumer',
+          },
+        },
+      },
     ]),
   ],
   controllers: [AppController],
