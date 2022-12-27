@@ -11,14 +11,4 @@ export class AppController {
     console.log(data);
     return this.appService.getHello();
   }
-
-  @MessagePattern('register.user')
-  createUser(userData) {
-    return this.appService.createUser(userData);
-  }
-
-  @MessagePattern('login.user')
-  loginUser(loginData) {
-    return this.appService.loginUser(loginData);
-  }
 }
